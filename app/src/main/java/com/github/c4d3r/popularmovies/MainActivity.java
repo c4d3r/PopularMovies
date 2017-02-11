@@ -23,6 +23,11 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+
+/**
+ * Recommended Dependency injection
+ * Butterknife (http://jakewharton.github.io/butterknife/)
+ */
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView _gvMovies;

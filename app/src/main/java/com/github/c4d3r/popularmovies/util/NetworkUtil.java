@@ -8,7 +8,9 @@ import android.net.NetworkInfo;
  * Created by Maxim on 02/02/2017.
  */
 
-public class NetworkUtil {
+public final class NetworkUtil {
+
+    private NetworkUtil() {} // suppress constructor, class will never be instantiated
 
     public static boolean isOnline(Context context) {
         ConnectivityManager cm =

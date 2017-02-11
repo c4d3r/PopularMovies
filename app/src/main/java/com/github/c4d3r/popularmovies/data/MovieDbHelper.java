@@ -9,6 +9,10 @@ import com.github.c4d3r.popularmovies.data.MovieContract.*;
  * Created by Maxim on 11/02/2017.
  */
 
+/**
+ * Recommended ORM tool, Sugar ORM
+ * http://satyan.github.io/sugar/getting-started.html
+ */
 public class MovieDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "movies.db";
