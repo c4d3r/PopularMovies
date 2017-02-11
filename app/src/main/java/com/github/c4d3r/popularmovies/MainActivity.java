@@ -1,35 +1,31 @@
 package com.github.c4d3r.popularmovies;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.Toast;
 
 import com.github.c4d3r.popularmovies.adapter.MovieAdapter;
 import com.github.c4d3r.popularmovies.model.Movie;
-import com.github.c4d3r.popularmovies.model.MovieResponse;
+import com.github.c4d3r.popularmovies.model.Response;
 import com.github.c4d3r.popularmovies.service.MovieService;
 import com.github.c4d3r.popularmovies.util.NetworkUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private GridView _gvMovies;
+    private RecyclerView _gvMovies;
     private MovieService _movieService;
     private MovieAdapter _movieAdapter;
     private List<Movie> _movies = new ArrayList<>();
@@ -40,47 +36,49 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        _gvMovies = (GridView)findViewById(R.id.gvMovies);
+        final Activity activity = this;
+
+
+        _movieAdapter = new MovieAdapter(new MovieAdapter.MovieAdapterOnClickHandler() {
+            @Override
+            public void onClick(Movie selectedMovie) {
+                Log.d("MainActivity", "Clicked movie");
+                Intent intent = new Intent(activity, DetailActivity.class);
+                intent.putExtra("movie", selectedMovie);
+                startActivity(intent);
+            }
+        });
+
+        _movieAdapter.setMovies(_movies);
+
+        _gvMovies = (RecyclerView) findViewById(R.id.gvMovies);
+        _gvMovies.setLayoutManager(new GridLayoutManager(this, 2)); // 2 columns
+        _gvMovies.setAdapter(_movieAdapter);
 
         // load movies
         Log.d("MainActivity", "Loading movies...");
         _movieService = new MovieService();
         getMovies(_movieService.getRepository().listPopularMovies());
 
-        _movieAdapter = new MovieAdapter(this, _movies);
-        _gvMovies.setAdapter(_movieAdapter);
     }
 
-    public void getMovies(Call<MovieResponse> movies) {
+    public void getMovies(Call<Response<Movie>> movies) {
 
         if(!NetworkUtil.isOnline(getApplicationContext())) {
             Toast.makeText(getApplicationContext(), "Please make sure you have internet access!", Toast.LENGTH_LONG).show();
             return;
         }
 
-        final Activity activity = this;
-
-        movies.enqueue(new Callback<MovieResponse>() {
+        movies.enqueue(new Callback<Response<Movie>>() {
             @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-
+            public void onResponse(Call<Response<Movie>> call, retrofit2.Response<Response<Movie>> response) {
                 _movies.clear();
                 _movies.addAll(response.body().getResults());
                 _movieAdapter.notifyDataSetChanged();
-
-                _gvMovies.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Intent intent = new Intent(activity, DetailActivity.class);
-                        Movie selectedMovie = _movies.get(i);
-                        intent.putExtra("movie", selectedMovie);
-                        startActivity(intent);
-                    }
-                });
             }
 
             @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
+            public void onFailure(Call<Response<Movie>> call, Throwable t) {
                 Log.e("MainActivity", t.getMessage());
             }
         });

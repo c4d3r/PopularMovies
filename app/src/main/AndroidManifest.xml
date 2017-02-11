@@ -23,6 +23,11 @@
             android:name=".DetailActivity"
             android:label="Movie Details"
             android:launchMode="singleInstance"/>
+
+        <provider
+            android:name=".data.MovieProvider"
+            android:authorities="@string/content_authority"
+            android:exported="false" />
     </application>
 
 </manifest>

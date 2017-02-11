@@ -4,18 +4,21 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
-
+import java.lang.reflect.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Maxim on 01/02/2017.
  */
 
-public class MovieResponse implements Parcelable {
+public class Response<T> implements Parcelable {
+
+    private int id;
 
     private int page;
 
-    private List<Movie> results;
+    private List<T> results;
 
     @SerializedName("total_results")
     private int totalResults;
@@ -23,18 +26,18 @@ public class MovieResponse implements Parcelable {
     @SerializedName("total_pages")
     private int totalPages;
 
-    public MovieResponse(Parcel in) {
+    public Response(Parcel in) {
         page = in.readInt();
         totalResults = in.readInt();
         totalPages = in.readInt();
-        results = in.createTypedArrayList(Movie.CREATOR);
+        in.readList(results, List.class.getClassLoader());
     }
 
     public int getPage() {
         return page;
     }
 
-    public List<Movie> getResults() {
+    public List<T> getResults() {
         return results;
     }
 
@@ -59,15 +62,15 @@ public class MovieResponse implements Parcelable {
         return 0;
     }
 
-    public final Parcelable.Creator<MovieResponse> CREATOR = new Creator<MovieResponse>() {
+    public final Parcelable.Creator<Response> CREATOR = new Creator<Response>() {
         @Override
-        public MovieResponse createFromParcel(Parcel source) {
-            return new MovieResponse(source);
+        public Response createFromParcel(Parcel source) {
+            return new Response(source);
         }
 
         @Override
-        public MovieResponse[] newArray(int size) {
-            return new MovieResponse[size];
+        public Response[] newArray(int size) {
+            return new Response[size];
         }
     };
 }

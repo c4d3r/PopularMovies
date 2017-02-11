@@ -20,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieService {
 
-    private static final String API_KEY = "YOUR_API_KEY";
+    private static final String API_KEY = "YOUR API KEY";
     public static final String BASE_URL = "http://api.themoviedb.org/3/";
 
     private MovieInterface repository;

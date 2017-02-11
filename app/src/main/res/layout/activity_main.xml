@@ -12,16 +12,12 @@
 
 
 
-    <GridView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/gvMovies"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/gvMovies"
-        android:columnCount="3"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="3dp"
-        android:horizontalSpacing="3dp"
-        android:numColumns="auto_fit">
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"/>
 
-    </GridView>
 
 </RelativeLayout>

@@ -1,9 +1,23 @@
 <resources>
     <string name="app_name">Popular Movies</string>
+    <string name="content_authority">com.github.c4d3r.popularmovies</string>
 
+    <!-- Filters -->
     <string name="filter_name">Filter</string>
     <string name="filter_top_rated">Top rated</string>
     <string name="filter_popular">Popular</string>
 
     <string name="movie_detail_score">Rating</string>
+
+    <!-- Dynamics -->
+    <string name="dynamic_review_author">Reviewed By %1$s</string>
+
+    <!-- Labels -->
+    <string name="label_trailers">Trailers</string>
+    <string name="label_reviews">Reviews</string>
+    <string name="label_trailer_view">View</string>
+
+    <!-- Menus -->
+    <string name="menu_item_favourite_label">Favourite</string>
+    <string name="menu_item_unfavourite_label">Unfavourite</string>
 </resources>
